@@ -1,17 +1,13 @@
 # base_template.rb
 run "echo TODO > README"
 
-generate :nifty_layout
+plugin "restful_authentication", :git => "git://github.com/technoweenie/restful-authentication.git"
+plugin "rspec", :git => "git://github.com/dchelimsky/rspec.git"
+plugin "rspec-rails", :git => "git://github.com/dchelimsky/rspec-rails.git"
 
-gem 'RedCloth', :lib => 'redcloth'
-gem 'mislav-will_paginate', :lib => 'will_paginate', :source => 'http://gems.github.com'
-rake "gems:install"
+generate :rspec
 
-if yes?("Do you want to use RSpec?")
-  plugin "rspec", :git => "git://github.com/dchelimsky/rspec.git"
-  plugin "rspec-rails", :git => "git://github.com/dchelimsky/rspec-rails.git"
-  generate :rspec
-end
+generate :authenticated, "user sessions"
 
 git :init
 
@@ -21,6 +17,7 @@ log/*.log
 tmp/**/*
 config/database.yml
 db/*.sqlite3
+.svn
 END
 
 run "touch tmp/.gitignore log/.gitignore vendor/.gitignore"
